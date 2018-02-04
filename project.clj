@@ -1,7 +1,6 @@
 (defproject playing-with-threejs "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.clojure/clojurescript "1.9.946"]
-                 [cljsjs/three "0.0.87-0"]]
+                 [org.clojure/clojurescript "1.9.946"]]
 
   :plugins [[lein-figwheel "0.5.14"]
             [lein-cljsbuild "1.1.7" :exclusions [[org.clojure/clojure]]]]
@@ -22,16 +21,15 @@
                         :compiler {:output-to "docs/js/play.js"
                                    :main play.core
                                    :optimizations :advanced
-                                   :pretty-print false}}]}
+                                   :pretty-print false
+                                   :externs ["resources/lib/three.ext.js"]}}]}
 
   :figwheel {:css-dirs ["resources/public/css"]
              :open-file-command "open-in-intellij"
              :server-ip "0.0.0.0"
              :repl false}
 
-  :profiles {:dev {:dependencies [[binaryage/devtools "0.9.9"]
-                                  [figwheel-sidecar "0.5.14"]
-                                  [com.cemerick/piggieback "0.2.2"]]
+  :profiles {:dev {:dependencies [[binaryage/devtools "0.9.9"]]
                    :clean-targets ^{:protect false} ["resources/public/js" :target-path]}}
 
   :aliases {"dev" ["do"
