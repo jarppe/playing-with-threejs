@@ -2,6 +2,10 @@
 
 Just playing with ThreeJS.
 
+## Live
+
+The latest release can be seen at https://jarppe.github.io/playing-with-threejs/
+
 ## Setup
 
 To get an interactive development environment run:
