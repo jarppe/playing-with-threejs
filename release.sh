@@ -14,7 +14,10 @@ function die {
 echo "releasing" $message
 
 rm -fr ./docs/*
-cp -r ./resources/public/index.html ./resources/public/css ./docs/
+cp -r ./resources/public/index.html \
+      ./resources/public/css \
+      ./resources/public/lib  \
+      ./docs/
 lein dist
 git add ./docs
 git commit -m "$message"
