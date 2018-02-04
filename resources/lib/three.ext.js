@@ -9864,7 +9864,8 @@ THREE.WebGLRenderer.prototype = {
   "supportsInstancedArrays": function () {},
   "supportsStandardDerivatives": function () {},
   "supportsVertexTextures": function () {},
-  "updateShadowMap": function () {}
+  "updateShadowMap": function () {},
+  "render": function () {}
 };
 THREE.WireframeGeometry.prototype = {
   "addAttribute": function () {},
