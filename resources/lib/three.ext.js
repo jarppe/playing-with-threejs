@@ -5654,7 +5654,8 @@ THREE.Geometry.prototype = {
   "setFromPoints": function () {},
   "sortFacesByMaterialIndex": function () {},
   "toJSON": function () {},
-  "translate": function () {}
+  "translate": function () {},
+  "vertices": function() {}
 };
 THREE.GridHelper.prototype = {
   "add": function () {},
@@ -6533,6 +6534,8 @@ THREE.Line.prototype = {
   "updateMatrix": function () {},
   "updateMatrixWorld": function () {},
   "worldToLocal": function () {}
+  "transparent": function () {},
+  "opacity": function () {}
 };
 THREE.Line3.prototype = {
   "applyMatrix4": function () {},
@@ -6547,7 +6550,9 @@ THREE.Line3.prototype = {
   "distanceSq": function () {},
   "equals": function () {},
   "getCenter": function () {},
-  "set": function () {}
+  "set": function () {},
+  "transparent": function () {},
+  "opacity": function () {}
 };
 THREE.LineBasicMaterial.prototype = {
   "addEventListener": function () {},
@@ -6562,7 +6567,9 @@ THREE.LineBasicMaterial.prototype = {
   "onBeforeCompile": function () {},
   "removeEventListener": function () {},
   "setValues": function () {},
-  "toJSON": function () {}
+  "toJSON": function () {},
+  "transparent": function () {},
+  "opacity": function () {}
 };
 THREE.LineCurve.prototype = {
   "clone": function () {},
@@ -6668,7 +6675,8 @@ THREE.LineLoop.prototype = {
   "traverseVisible": function () {},
   "updateMatrix": function () {},
   "updateMatrixWorld": function () {},
-  "worldToLocal": function () {}
+  "worldToLocal": function () {},
+  "visible": function () {}
 };
 THREE.LineSegments.prototype = {
   "add": function () {},
@@ -7226,7 +7234,6 @@ THREE.OrthographicCamera.prototype = {
   "onBeforeRender": function () {},
   "raycast": function () {},
   "remove": function () {},
-  "removeEventListener": function () {},
   "renderDepth": function () {},
   "rotateOnAxis": function () {},
   "rotateOnWorldAxis": function () {},
@@ -7250,7 +7257,11 @@ THREE.OrthographicCamera.prototype = {
   "updateMatrix": function () {},
   "updateMatrixWorld": function () {},
   "updateProjectionMatrix": function () {},
-  "worldToLocal": function () {}
+  "worldToLocal": function () {},
+  "top": function () {},
+  "right": function () {},
+  "bottom": function () {},
+  "left": function () {}
 };
 THREE.ParametricBufferGeometry.prototype = {
   "addAttribute": function () {},
@@ -9608,7 +9619,8 @@ THREE.Vector2.prototype = {
   "sub": function () {},
   "subScalar": function () {},
   "subVectors": function () {},
-  "toArray": function () {}
+  "toArray": function () {},
+  "push": function () {}
 };
 THREE.Vector3.prototype = {
   "add": function () {},
@@ -9685,7 +9697,8 @@ THREE.Vector3.prototype = {
   "subVectors": function () {},
   "toArray": function () {},
   "transformDirection": function () {},
-  "unproject": function () {}
+  "unproject": function () {},
+  "push": function () {}
 };
 THREE.Vector4.prototype = {
   "add": function () {},
@@ -9734,7 +9747,8 @@ THREE.Vector4.prototype = {
   "sub": function () {},
   "subScalar": function () {},
   "subVectors": function () {},
-  "toArray": function () {}
+  "toArray": function () {},
+  "push": function () {}
 };
 THREE.VectorKeyframeTrack.prototype = {
   "DefaultInterpolation": function () {},
@@ -9865,7 +9879,8 @@ THREE.WebGLRenderer.prototype = {
   "supportsStandardDerivatives": function () {},
   "supportsVertexTextures": function () {},
   "updateShadowMap": function () {},
-  "render": function () {}
+  "render": function () {},
+  "setViewport": function () {}
 };
 THREE.WireframeGeometry.prototype = {
   "addAttribute": function () {},
