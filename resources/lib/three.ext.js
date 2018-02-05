@@ -6535,7 +6535,8 @@ THREE.Line.prototype = {
   "updateMatrixWorld": function () {},
   "worldToLocal": function () {},
   "transparent": function () {},
-  "opacity": function () {}
+  "opacity": function () {},
+  "material": function () {}
 };
 THREE.Line3.prototype = {
   "applyMatrix4": function () {},
@@ -6552,7 +6553,8 @@ THREE.Line3.prototype = {
   "getCenter": function () {},
   "set": function () {},
   "transparent": function () {},
-  "opacity": function () {}
+  "opacity": function () {},
+  "material": function () {}
 };
 THREE.LineBasicMaterial.prototype = {
   "addEventListener": function () {},
@@ -6676,7 +6678,10 @@ THREE.LineLoop.prototype = {
   "updateMatrix": function () {},
   "updateMatrixWorld": function () {},
   "worldToLocal": function () {},
-  "visible": function () {}
+  "visible": function () {},
+  "transparent": function () {},
+  "opacity": function () {},
+  "material": function () {}
 };
 THREE.LineSegments.prototype = {
   "add": function () {},
