@@ -9,7 +9,7 @@ function die {
   exit 1
 }
 
-#git diff-index --quiet HEAD -- || die "git not clean"
+git diff-index --quiet HEAD -- || die "git not clean"
 
 echo "releasing" $message
 
