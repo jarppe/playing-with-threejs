@@ -6533,7 +6533,7 @@ THREE.Line.prototype = {
   "traverseVisible": function () {},
   "updateMatrix": function () {},
   "updateMatrixWorld": function () {},
-  "worldToLocal": function () {}
+  "worldToLocal": function () {},
   "transparent": function () {},
   "opacity": function () {}
 };
