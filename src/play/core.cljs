@@ -1,20 +1,12 @@
 (ns play.core)
 
 (enable-console-print!)
-(println "Here we go, again!")
 
 ;;
 ;; =====================================================================================
 ;; Make ctx:
 ;; =====================================================================================
 ;;
-
-(defn make-obj-old []
-  (js/THREE.Line. (doto (js/THREE.Geometry.)
-                    (-> .-vertices (.push (js/THREE.Vector3. -10 0 0)))
-                    (-> .-vertices (.push (js/THREE.Vector3. 0 10 0)))
-                    (-> .-vertices (.push (js/THREE.Vector3. 10 0 0))))
-                  (js/THREE.LineBasicMaterial. #js {:color 0x0000ff})))
 
 (def segments 60)
 
@@ -29,16 +21,13 @@
                  (js/Array.))
          (js/Float32Array.))))
 
-(defn make-geom []
-  (doto (js/THREE.BufferGeometry.)
-    (.addAttribute "position" (js/THREE.BufferAttribute. (make-verts) 3))))
-
-(def geom (make-geom))
+(def geom (doto (js/THREE.BufferGeometry.)
+            (.addAttribute "position" (js/THREE.BufferAttribute. (make-verts) 3))))
 
 (defn make-material []
-  (doto (js/THREE.LineBasicMaterial. #js {:color 0xff00ff})
+  (doto (js/THREE.LineBasicMaterial. #js {:color 0x00ff00})
     (-> .-transparent (set! true))
-    (-> .-opacity (set! 0.9))))
+    (-> .-opacity (set! 0.0))))
 
 (defn make-element [x y s]
   (doto (js/THREE.LineLoop. geom (make-material))
@@ -50,11 +39,6 @@
 (def elements (let [group (js/THREE.Group.)]
                 (dotimes [_ 1000]
                     (.add group (make-element 0 0 100)))
-                ;(.add group (make-element 1 1 0.1))
-                ;(.add group (make-element 1 -1 0.1))
-                ;(.add group (make-element -1 -1 0.1))
-                ;(.add group (make-element -1 1 0.1))
-                ;(.add group (make-element 0 0 1))
                 group))
 
 (defn resize-canvas [{:keys [canvas] :as ctx}]
@@ -73,7 +57,7 @@
     (-> (.setViewport 0 0 width height)))
   ctx)
 
-(defn resize-camera [{:keys [camera width height aspect] :as ctx}]
+(defn resize-camera [{:keys [camera width height] :as ctx}]
   (doto camera
     (-> .-left (set! 0))
     (-> .-right (set! width))
@@ -189,7 +173,6 @@
     (.addEventListener "resize" (fn [e] (on-resize e))))
   (doto (:canvas @ctx)
     (.addEventListener "mousemove" (fn [e] (on-mouse-move e)))
-    ;(.addEventListener "touchstart" (fn [e] (on-touch-move e)))
     (.addEventListener "touchmove" (fn [e] (on-touch-move e)))))
 
 (defonce _ (init-event-listeners))
