@@ -156,7 +156,8 @@
 
 (defn on-mouse-move [e]
   (.preventDefault e)
-  (revive-one-element (-> e .-offsetX) (-> e .-offsetY)))
+  (when (-> e .-buttons zero? not)
+    (revive-one-element (-> e .-offsetX) (-> e .-offsetY))))
 
 (defn on-touch-move [e]
   (.preventDefault e)
