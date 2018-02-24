@@ -8,7 +8,7 @@
 ;; =====================================================================================
 ;;
 
-(def segments 60)
+(def segments 3)
 
 (defn make-verts []
   (let [d (-> Math/PI (* 2.0) (/ segments))]
@@ -97,16 +97,25 @@
 ;;
 
 (defn retire-element [element]
-  (-> element .-visible (set! false)))
+  (doto element
+    (-> .-visible (set! false))))
 
 (defn set-element-age [element age]
-  (let [s (* age 100)]
+  (let [s (* age 100)
+        y-speed (-> element .-y-speed (+ 0.01))
+        y (-> element .-position .-y (+ y-speed))
+        r-speed (-> element .-r-speed)
+        r (-> element .-rotation .-z (+ r-speed))]
     (doto element
       (-> .-age (set! age))
       (-> .-material .-opacity (set! (- 1.0 age)))
+      (-> .-rotation .-z (set! r))
+      (-> .-r (set! r))
       (-> .-scale (doto
                     (-> .-x (set! s))
-                    (-> .-y (set! s)))))))
+                    (-> .-y (set! s))))
+      (-> .-position .-y (set! y))
+      (-> .-y-speed (set! y-speed)))))
 
 (defn age-element [element]
   (let [age (.-age element)]
@@ -118,7 +127,10 @@
   (doto element
     (set-element-age 0.0)
     (-> .-visible (set! true))
-    (-> .-position (.copy (js/THREE.Vector3. x y 0)))))
+    (-> .-position (.copy (js/THREE.Vector3. x y 0)))
+    (-> .-rotation .-z (set! 0.0))
+    (-> .-r-speed (set! (-> (rand) (- 0.5) (* 0.05))))
+    (-> .-y-speed (set! 0.0))))
 
 (defn revive-one-element [x y]
   (when-let [element (->> elements
