@@ -8,16 +8,17 @@
 ;; =====================================================================================
 ;;
 
-(def segments 3)
+(def segments 10)
 
 (defn make-verts []
   (let [d (-> Math/PI (* 2.0) (/ segments))]
     (->> (range segments)
          (reduce (fn [verts i]
-                   (doto verts
-                     (.push (Math/cos (* i d)))
-                     (.push (Math/sin (* i d)))
-                     (.push 0)))
+                   (let [r (if (odd? i) 1.0 0.5)]
+                     (doto verts
+                       (.push (-> i (* d) (Math/cos) (* r)))
+                       (.push (-> i (* d) (Math/sin) (* r)))
+                       (.push 0))))
                  (js/Array.))
          (js/Float32Array.))))
 
@@ -33,18 +34,15 @@
   (doto (js/THREE.LineLoop. geom (make-material))
     (-> .-position (.copy (js/THREE.Vector3. x y 0)))
     (-> .-scale (.copy (js/THREE.Vector3. s s 1)))
+    (-> .-material .-opacity (set! 1.0))
     (-> .-visible (set! false))
     (-> .-age (set! 0.0))))
-
-(def elements (let [group (js/THREE.Group.)]
-                (dotimes [_ 1000]
-                    (.add group (make-element 0 0 100)))
-                group))
 
 (defn resize-canvas [{:keys [canvas] :as ctx}]
   (let [width (.-clientWidth canvas)
         height (.-clientHeight canvas)
         aspect (/ width height)]
+    (js/console.log "width:" width "height:" height)
     (doto canvas
       (-> .-width (set! width))
       (-> .-height (set! height)))
@@ -59,10 +57,10 @@
 
 (defn resize-camera [{:keys [camera width height] :as ctx}]
   (doto camera
-    (-> .-left (set! 0))
-    (-> .-right (set! width))
     (-> .-top (set! 0))
+    (-> .-right (set! width))
     (-> .-bottom (set! height))
+    (-> .-left (set! 0))
     (.updateProjectionMatrix))
   ctx)
 
@@ -72,13 +70,13 @@
       (resize-renderer)
       (resize-camera)))
 
-(defn make-scene []
-  (doto (js/THREE.Scene.)
-    (.add elements)))
-
 (defn make-ctx []
-  (let [canvas (js/document.getElementById "app")]
-    (-> {:canvas canvas}
+  (let [canvas (js/document.getElementById "app")
+        elements (js/THREE.Group.)]
+    (dotimes [_ 1000]
+      (.add elements (make-element 0 0 100)))
+    (-> {:canvas canvas
+         :elements elements}
         (resize-canvas)
         (assoc :renderer (js/THREE.WebGLRenderer. #js {:canvas canvas}))
         (resize-renderer)
@@ -86,9 +84,10 @@
                          (-> .-position .-z (set! 1))
                          (.lookAt (js/THREE.Vector3. 0 0 0))))
         (resize-camera)
-        (assoc :scene (make-scene)))))
+        (assoc :scene (doto (js/THREE.Scene.)
+                        (.add elements))))))
 
-(def ctx (atom (make-ctx)))
+(defonce ctx (atom (make-ctx)))
 
 ;;
 ;; =====================================================================================
@@ -129,11 +128,12 @@
     (-> .-visible (set! true))
     (-> .-position (.copy (js/THREE.Vector3. x y 0)))
     (-> .-rotation .-z (set! 0.0))
-    (-> .-r-speed (set! (-> (rand) (- 0.5) (* 0.05))))
+    (-> .-r-speed (set! (-> (rand) (- 0.5) (* 0.1))))
     (-> .-y-speed (set! 0.0))))
 
-(defn revive-one-element [x y]
-  (when-let [element (->> elements
+(defn revive-one-element [ctx x y]
+  (when-let [element (->> ctx
+                          :elements
                           .-children
                           (remove (fn [element] (-> element .-visible)))
                           (first))]
@@ -145,7 +145,7 @@
 ;; =====================================================================================
 ;;
 
-(defn render [{:keys [renderer scene camera]}]
+(defn render [{:keys [renderer scene camera elements]}]
   (doseq [element (-> elements .-children)]
     (when (-> element .-visible)
       (age-element element)))
@@ -163,20 +163,17 @@
 ;; =====================================================================================
 ;;
 
-(def PI Math/PI)
-(def PI2 (* Math/PI 2.0))
-
 (defn on-mouse-move [e]
   (.preventDefault e)
   (when (-> e .-buttons zero? not)
-    (revive-one-element (-> e .-offsetX) (-> e .-offsetY))))
+    (revive-one-element @ctx (-> e .-offsetX) (-> e .-offsetY))))
 
 (defn on-touch-move [e]
   (.preventDefault e)
   (let [touches (-> e .-touches)]
     (dotimes [n (.-length touches)]
       (let [touch (.item touches n)]
-        (revive-one-element (->> touch .-clientX) (->> touch .-clientY))))))
+        (revive-one-element @ctx (-> touch .-clientX) (-> touch .-clientY))))))
 
 (defn on-resize [_]
   (swap! ctx resize))
