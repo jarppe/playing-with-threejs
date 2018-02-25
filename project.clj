@@ -15,14 +15,19 @@
                                    :output-to "resources/public/js/play.js"
                                    :output-dir "resources/public/js/out"
                                    :source-map-timestamp true
-                                   :preloads [devtools.preload]}}
+                                   :preloads [devtools.preload]
+                                   :foreign-libs [{:file "resources/lib/perlin.js"
+                                                   :provides ["noise"]}]}}
                        {:id "min"
                         :source-paths ["src"]
                         :compiler {:output-to "docs/js/play.js"
                                    :main play.core
                                    :optimizations :advanced
                                    :pretty-print false
-                                   :externs ["resources/lib/three.ext.js"]}}]}
+                                   :foreign-libs [{:file "resources/lib/perlin.js"
+                                                   :provides ["noise"]}]
+                                   :externs ["resources/lib/three.ext.js"
+                                             "resources/lin/perlin.ext.js"]}}]}
 
   :figwheel {:css-dirs ["resources/public/css"]
              :open-file-command "open-in-intellij"
